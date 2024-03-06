@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Note App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 20px;
+      display: flex;
+      background-color: rgb(55, 37, 101);
+    }
+
+    #noteAppContainer {
+      margin-right: 20px;
+    }
+
+    #noteForm {
+      background-color: rgb(81, 61, 132);
+      padding: 20px;
+      width: 170px;
+      border-radius: 10px;
+      border: 5px dashed rgb(120, 96, 182);
+    }
+
+    h1 {
+      color: rgb(208, 196, 237);
+    }
+
+    .add {
+      border: none;
+      background-color: rgb(95, 62, 177);
+      color: white;
+      padding: 5px;
+      padding-left: 5px;
+      padding-right: 5px;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+
+    input, textarea {
+      border: none;
+      border-radius: 5px;
+      background-color: rgb(220, 205, 255);
+    }
+
+    label {
+      font-size: 20px;
+      color: rgb(226, 215, 255);
+    }
+
+    button {
+      border: none;
+      background-color: rgb(165, 69, 60);
+      padding: 4px;
+      border-radius: 5px;
+      margin-top: 10px;
+      color: white;
+      display: block;
+    }
+
+    #notesList {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    #notesList li {
+      margin-bottom: 10px;
+      background-color: aquamarine;
+      padding: 20px;
+      border-radius: 10px;
+      width: 150px;
+      margin-right: 20px;
+      border: 5px dashed rgb(255, 255, 255);
+      white-space: pre-line;
+      word-wrap: break-word; /* Allow long words to break and wrap */
+      min-height: 100px; /* Set a minimum height to ensure visibility even for short notes */
+    }
+
+    #notesList li.long-text-note {
+      height: auto;
+    }
+
+    #notesContainer {
+      border-left: 2px solid #ccc;
+      padding-left: 20px;
+    }
+    
+  </style>
+</head>
+<body>
+  <div id="noteAppContainer">
+    <h1>Note App</h1>
+
+    <form id="noteForm">
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" required>
+      <br>
+      <label for="content">Content:</label>
+      <textarea id="content" name="content" rows="4" required></textarea>
+      <br>
+      <button class="add" type="submit">Add Note</button>
+    </form>
+  </div>
+
+  <div id="notesContainer">
+    <ul id="notesList"></ul>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const noteForm = document.getElementById('noteForm');
+      const notesList = document.getElementById('notesList');
+      const colors = ['#DBB5FF', '#C6FFB5', '#FFD1F8', '#D1EBFF'];
+
+      noteForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const title = document.getElementById('title').value;
+        const content = document.getElementById('content').value;
+
+        try {
+          const response = await fetch('/api/notes', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ title, content }),
+          });
+
+          if (response.ok) {
+            loadNotes();
+            noteForm.reset();
+          } else {
+            console.error('Error adding note');
+          }
+        } catch (error) {
+          console.error('Error adding note', error);
+        }
+      });
+
+      notesList.addEventListener('click', async (event) => {
+        if (event.target.tagName === 'BUTTON') {
+          const noteId = event.target.dataset.id;
+
+          try {
+            const response = await fetch(`/api/notes/${noteId}`, {
+              method: 'DELETE',
+            });
+
+            if (response.ok) {
+              loadNotes();
+            } else {
+              console.error('Error deleting note');
+            }
+          } catch (error) {
+            console.error('Error deleting note', error);
+          }
+        }
+      });
+
+      async function loadNotes() {
+        try {
+          const response = await fetch('/api/notes');
+          const notes = await response.json();
+
+          notesList.innerHTML = '';
+          notes.forEach((note, index) => {
+            const listItem = document.createElement('li');
+            const colorIndex = index % 4; // Get the color index in a cyclic manner
+            listItem.style.backgroundColor = colors[colorIndex];
+
+            if (note.content.length > 50) {
+              // If content length is greater than 50, apply specific style
+              listItem.classList.add('long-text-note');
+            }
+
+            listItem.innerHTML = `
+              <strong>${note.title}:</strong> ${note.content}
+              <button data-id="${note.id}">Delete</button>
+            `;
+            notesList.appendChild(listItem);
+
+            // Check if it's the fourth note, then start a new column
+            if ((index + 1) % 4 === 0) {
+              const breakElement = document.createElement('br');
+              notesList.appendChild(breakElement);
+            }
+          });
+        } catch (error) {
+          console.error('Error loading notes', error);
+        }
+      }
+
+      loadNotes();
+    });
+  </script>
+</body>
+</html>
