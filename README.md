@@ -13,7 +13,7 @@ A simple note-taking app using Node.js, Express, and PostgreSQL.
    - `GET /api/notes`: Retrieve notes
    - `POST /api/notes`: Create a note
    - `DELETE /api/notes/:id`: Delete a note by ID
-C:\Users\gunel\Desktop\myProjects\note-app\noteapp.png
+<img width="960" alt="image" src="https://github.com/LittleSmile05/Note-App-PERN-stack/assets/111835072/60a5876d-f7c3-41e8-b7e2-4a5ed575a0a1">
 
 
 
