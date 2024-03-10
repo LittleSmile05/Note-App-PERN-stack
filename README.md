@@ -2,7 +2,6 @@
 
 A simple note-taking app using Node.js, Express, and PostgreSQL.
 
-## Demo https://imaginative-licorice-53734c.netlify.app/
 
 ## Usage
 
