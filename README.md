@@ -2,6 +2,8 @@
 
 A simple note-taking app using Node.js, Express, and PostgreSQL.
 
+## Demo https://imaginative-licorice-53734c.netlify.app/
+
 ## Usage
 
 1. Clone the repo: `git clone https://github.com/LittleSmile05/Note-App.git`
