@@ -1,0 +1,84 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 20px;
+  display: flex;
+  background-color: rgb(55, 37, 101);
+}
+
+#noteAppContainer {
+  margin-right: 20px;
+}
+
+#noteForm {
+  background-color: rgb(81, 61, 132);
+  padding: 20px;
+  width: 170px;
+  border-radius: 10px;
+  border: 5px dashed rgb(120, 96, 182);
+}
+
+h1 {
+  color: rgb(208, 196, 237);
+}
+
+.add {
+  border: none;
+  background-color: rgb(95, 62, 177);
+  color: white;
+  padding: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+input, textarea {
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(220, 205, 255);
+}
+
+label {
+  font-size: 20px;
+  color: rgb(226, 215, 255);
+}
+
+button {
+  border: none;
+  background-color: rgb(165, 69, 60);
+  padding: 4px;
+  border-radius: 5px;
+  margin-top: 10px;
+  color: white;
+  display: block;
+}
+
+#notesList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#notesList li {
+  margin-bottom: 10px;
+  background-color: aquamarine;
+  padding: 20px;
+  border-radius: 10px;
+  width: 150px;
+  margin-right: 20px;
+  border: 5px dashed rgb(255, 255, 255);
+  white-space: pre-line;
+  word-wrap: break-word; /* Allow long words to break and wrap */
+  min-height: 100px; /* Set a minimum height to ensure visibility even for short notes */
+}
+
+#notesList li.long-text-note {
+  height: auto;
+}
+
+#notesContainer {
+  border-left: 2px solid #ccc;
+  padding-left: 20px;
+}
